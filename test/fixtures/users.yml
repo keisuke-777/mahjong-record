@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  email: MyString
+  pass: MyString
+  rate: 1
+  winning: 1
+  matches: 1
+  ave_score: 1
+
+two:
+  name: MyString
+  email: MyString
+  pass: MyString
+  rate: 1
+  winning: 1
+  matches: 1
+  ave_score: 1

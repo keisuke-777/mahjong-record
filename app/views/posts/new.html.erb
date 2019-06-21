@@ -1,0 +1,21 @@
+<div class="main posts-new">
+  <div class="container">
+    <h1 class="form-heading">投稿する</h1>
+
+    <div class="form-body">
+      <% @post.errors.full_messages.each do |message| %>
+        <div class="form-error">
+          <%= message %>
+        </div>
+      <% end %>
+      
+      <%= form_tag("/posts/create") do %>
+        <p>ルーム番号</p>
+        <input name="room_number" value="<%= @post.room_number %>">
+        <p>name_a</p>
+        <input name="name_a" value="<%= @post.name_a %>">
+        <input type="submit" value="部屋を立てる！">
+      <% end %>
+    </div>
+  </div>
+</div>
