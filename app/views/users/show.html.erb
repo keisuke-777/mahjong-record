@@ -1,9 +1,12 @@
 <div class="main user-show">
   <div class="container">
     <div class="user">
-      <img src="<%= "/user_images/#{@user.image_name}" %>">
-      <h2><%= @user.name %></h2>
-      <p><%= @user.email %></p>
+
+      <h2>ユーザー名:<%= @user.name %></h2>
+      <p>メールアドレス:<%= @user.email %></p>
+      <p>勝率:<%= @user.winning*100/@user.matches %>%</p>
+      <p>平均スコア:<%= @user.total_score/@user.matches %></p>
+      <p>利益:<%= @user.money %>円</p>
       <% if @user.id == @current_user.id %>
         <%= link_to("編集", "/users/#{@user.id}/edit") %>
       <% end %>

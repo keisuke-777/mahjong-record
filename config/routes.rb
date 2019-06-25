@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get 'signup' => "users#signup"
   get "users/index" => "users#index"
   get "users/:id" => "users#show"
+  post "users/finish/:sum/:matches/:win/:rate" => "users#finish"
 
   get '/' => "home#top"
   get '/room' => "home#room"
@@ -19,8 +20,9 @@ Rails.application.routes.draw do
   get "posts/index" => "posts#index"
   get "room/:id" => "posts#room"
   get "posts/new" => "posts#new"
-  get "posts/:id" => "posts#show"
   post "posts/create" => "posts#create"
+  post "posts/name/:number" => "posts#name"
+  post "posts/join/:place/:room_number" => "posts#join"
   get "posts/:id/edit" => "posts#edit"
   post "posts/:id/update" => "posts#update"
   post "posts/:id/destroy" => "posts#destroy"

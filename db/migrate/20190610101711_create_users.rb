@@ -7,7 +7,8 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.integer :rate
       t.integer :winning
       t.integer :matches
-      t.integer :ave_score
+      t.integer :total_score
+      t.integer :money
 
       t.timestamps
     end

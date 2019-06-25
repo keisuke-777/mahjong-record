@@ -12,7 +12,7 @@
     <header>
       <div class="header-logo">
         <% if @current_user %>
-          <%= link_to("MahjongRecord", "/posts/index") %>
+          <%= link_to("MahjongRecord", "/posts/new") %>
         <% else %>
           <%= link_to("MahjongRecord", "/") %>
         <% end %>
@@ -23,14 +23,11 @@
             <%= link_to(@current_user.name, "/users/#{@current_user.id}") %>
           </li>
           <li>
-            <%= link_to("ユーザー一覧", "/users/index") %>
-          </li>
-          <li>
             <%= link_to("ログアウト", "/logout", {method: :post}) %>
           </li>
         <% else %>
           <li>
-            <%= link_to("MahjongRecordとは", "/about") %>
+            <%= link_to("MahjongRecordについて", "/about") %>
           </li>
           <li>
             <%= link_to("新規登録", "/signup") %>

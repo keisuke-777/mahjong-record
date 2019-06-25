@@ -1,3 +1,79 @@
 // Place all the styles related to the posts controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+a.joinButton {
+    background-color:#62f1e6;
+    border:1px solid #8888ff;
+    padding:1px 8px;
+    border-radius:5px;
+    box-shadow:0px 0px 10px #c3e1ff;
+    cursor:pointer;
+}
+a.joinButton:hover {
+    color:white;
+    background-color:navy;
+    text-shadow:0px 0px 3px #ffffff;
+}
+
+// テーブルのcss
+table th {
+    width: 150px;
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: middle;
+    background: #3f3f3f;
+    color: #ffffff;
+}
+table, th, td {
+    text-align: center;
+    vertical-align: middle;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    line-height: 1.5;
+}
+table td {
+    width: 350px;
+    vertical-align: middle;
+    padding: 10px;
+}
+
+input[type="number"]{
+    border:0;
+    padding:10px;
+    font-size:1em;
+    font-family:Arial, sans-serif;
+    color:rgb(0, 0, 0);
+    border:solid 1px #ccc;
+    margin:0 0 auto;
+    width:140px;
+}
+
+.name_box{
+    border:0;
+    padding:10px;
+    font-size:1em;
+    font-family:Arial, sans-serif;
+    color:rgb(0, 0, 0);
+    border:solid 1px #ccc;
+    margin:0 0 auto;
+    width:140px;
+}
+
+input[type="submit"]{
+    position: relative;
+    display: inline-block;
+    padding: 0.25em 0.5em;
+    text-decoration: none;
+    color: #FFF;
+    background: rgb(88, 211, 88);/*色*/
+    border: solid 1px rgb(35, 211, 35);/*線色*/
+    border-radius: 4px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+}
+
+input[type="submit"]:active{
+    border: solid 1px rgb(35, 211, 35);
+    box-shadow: none;
+    text-shadow: none;
+}

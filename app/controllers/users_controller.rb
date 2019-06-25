@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user, {only: [:index, :show, :edit, :update]}
   # before_action :forbid_login_user, {only: [:signup, :create, :login_form, :login]}
+  # 投稿したユーザと同じユーザのみ編集可能
   before_action :ensure_correct_user, {only: [:edit, :update]}
   
   def index
@@ -19,8 +20,12 @@ class UsersController < ApplicationController
     @user = User.new(
       name: params[:name],
       email: params[:email],
-      image_name: "default_user.jpg",
-      password: params[:password]
+      password: params[:password],
+      rate: "0",
+      winning: "0",
+      matches: "0",
+      total_score: "0",
+      money: "0"
     )
     if @user.save
       session[:user_id] = @user.id
@@ -62,7 +67,7 @@ class UsersController < ApplicationController
     if @user
       session[:user_id] = @user.id
       flash[:notice] = "ログインしました"
-      redirect_to("/posts/index")
+      redirect_to("/posts/new")
     else
       @error_message = "メールアドレスまたはパスワードが間違っています"
       @email = params[:email]
@@ -82,6 +87,21 @@ class UsersController < ApplicationController
       flash[:notice] = "権限がありません"
       redirect_to("/posts/index")
     end
+  end
+
+  def finish
+    @user = User.find_by(name: @current_user.name)
+    @user.winning += params[:win].to_i
+    @user.total_score += params[:sum].to_i
+    @user.matches += params[:matches].to_i
+    @user.money += (params[:sum].to_i*params[:rate].to_i*100).to_i
+    if @user.save
+      flash[:notice] = "対局結果を記録しました"
+      redirect_to("/users/#{@user.id}")
+    else
+      render("users/edit")
+    end
+
   end
   
 end
