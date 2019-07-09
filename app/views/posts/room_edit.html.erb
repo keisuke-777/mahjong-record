@@ -1,0 +1,169 @@
+<div class="main posts-index">
+  <div class="tableContainer">
+    <% sum = [0,0,0,0] %>
+    <% win = [0,0,0,0] %>
+    <%= form_tag("/posts/edit_row/#{@post.room_number}/#{params[:row]}") do %>
+      <table class="mainTable">
+        <tr>        
+          <th></th>
+          <th><%= @post.name_a %></th>
+          <th>
+            <% if @post.name_b != nil and @post.name_b != "" %>
+              <%= @post.name_b %>
+            <% else %>
+              未入力
+            <% end %>
+          </th>
+
+          <th>
+            <% if @post.name_c != nil and @post.name_c != "" %>
+              <%= @post.name_c %>
+            <% else %>
+              未入力
+            <% end %>
+          </th>
+
+          <th>
+            <% if @post.name_d != nil and @post.name_d != "" %>
+              <%= @post.name_d %>
+            <% else %>
+              未入力
+            <% end %>
+          </th>
+        </tr>
+        <div class="posts-index-item">
+          <% if @post.score_a == nil or @post.score_a == "" %>
+            <% scArray_a = [""] %>
+          <% else %>
+            <% scArray_a = @post.score_a.split(',') %>
+          <% end %>
+
+          <% if @post.score_b == nil or @post.score_b == "" %>
+            <% scArray_b = [""] %>
+          <% else %>
+            <% scArray_b = @post.score_b.split(',') %>
+          <% end %>
+
+          <% if @post.score_c == nil or @post.score_c == "" %>
+            <% scArray_c = [""] %>
+          <% else %>
+            <% scArray_c = @post.score_c.split(',') %>
+          <% end %>
+
+          <% if @post.score_d == nil or @post.score_d == "" %>
+            <% scArray_d = [""] %>
+          <% else %>
+            <% scArray_d = @post.score_d.split(',') %>
+          <% end %>
+
+
+          <% if @post.priority3 == nil or @post.priority3 == "" %>
+            <% priorityArray3 = [""] %>
+          <% else %>
+            <% priorityArray3 = @post.priority3.split(',') %>
+          <% end %>
+
+          <% if @post.priority2 == nil or @post.priority2 == "" %>
+            <% priorityArray2 = [""] %>
+          <% else %>
+            <% priorityArray2 = @post.priority2.split(',') %>
+          <% end %>
+
+          <% if @post.priority1 == nil or @post.priority1 == "" %>
+            <% priorityArray1 = [""] %>
+          <% else %>
+            <% priorityArray1 = @post.priority1.split(',') %>
+          <% end %>
+
+          <% i = params[:row].to_i %>
+          <% all = [scArray_a[i].to_i, scArray_b[i].to_i, scArray_c[i].to_i, scArray_d[i].to_i] %>
+            
+            <tr>
+              <td  width="8%"><%= i + 1 %></td>
+
+              <td width="18.4%">
+                <input type="number" name="score_a" value="<%= all[0] %>">
+                <% if priorityArray3[i] == "0" %>
+                    <input class="checkBox" type="radio" name="ton" value="tonA" checked="checked">東
+                <% else %>
+                    <input class="checkBox" type="radio" name="ton" value="tonA">東
+                <% end %>
+
+                <% if priorityArray2[i] == "0" %>
+                    <input class="checkBox" type="radio" name="nan" value="nanA" checked="checked">南
+                <% else %>
+                    <input class="checkBox" type="radio" name="nan" value="nanA">南
+                <% end %>
+                <% if priorityArray1[i] == "0" %>
+                    <input class="checkBox" type="radio" name="sya" value="syaA" checked="checked">西
+                <% else %>
+                    <input class="checkBox" type="radio" name="sya" value="syaA">西
+                <% end %>
+
+              </td>
+              <td width="18.4%">
+                <input type="number" name="score_b" value="<%= all[1] %>">
+                <% if priorityArray3[i] == "1" %>
+                    <input class="checkBox" type="radio" name="ton" value="tonB" checked="checked">東
+                <% else %>
+                    <input class="checkBox" type="radio" name="ton" value="tonB">東
+                <% end %>
+                <% if priorityArray2[i] == "1" %>
+                    <input class="checkBox" type="radio" name="nan" value="nanB" checked="checked">南
+                <% else %>
+                    <input class="checkBox" type="radio" name="nan" value="nanB">南
+                <% end %>
+                <% if priorityArray1[i] == "1" %>
+                    <input class="checkBox" type="radio" name="sya" value="syaB" checked="checked">西
+                <% else %>
+                    <input class="checkBox" type="radio" name="sya" value="syaB">西
+                <% end %>
+              </td>
+              <td width="18.4%">
+                <input type="number" name="score_c" value="<%= all[2] %>">
+                <% if priorityArray3[i] == "2" %>
+                    <input class="checkBox" type="radio" name="ton" value="tonB" checked="checked">東
+                <% else %>
+                    <input class="checkBox" type="radio" name="ton" value="tonC">東
+                <% end %>
+                <% if priorityArray2[i] == "2" %>
+                    <input class="checkBox" type="radio" name="nan" value="nanC" checked="checked">南
+                <% else %>
+                    <input class="checkBox" type="radio" name="nan" value="nanC">南
+                <% end %>
+                <% if priorityArray1[i] == "2" %>
+                    <input class="checkBox" type="radio" name="sya" value="syaC" checked="checked">西
+                <% else %>
+                    <input class="checkBox" type="radio" name="sya" value="syaC">西
+                <% end %>
+                
+                
+              </td>
+              <td width="18.4%">
+                <input type="number" name="score_d" value="<%= all[3] %>">
+                <% if priorityArray3[i] == "3" %>
+                    <input class="checkBox" type="radio" name="ton" value="tonB" checked="checked">東
+                <% else %>
+                    <input class="checkBox" type="radio" name="ton" value="tonD">東
+                <% end %>
+                <% if priorityArray2[i] == "3" %>
+                    <input class="checkBox" type="radio" name="nan" value="nanD" checked="checked">南
+                <% else %>
+                    <input class="checkBox" type="radio" name="nan" value="nanD">南
+                <% end %>
+                <% if priorityArray1[i] == "3" %>
+                    <input class="checkBox" type="radio" name="sya" value="syaD" checked="checked">西
+                <% else %>
+                    <input class="checkBox" type="radio" name="sya" value="syaD">西
+                <% end %>
+              </td>
+            </tr>
+
+        </div>
+      </table>
+      <br>
+      <input type="submit" value="変更を保存して戻る" />
+    <% end %>
+    <%= link_to("変更を破棄する", "/room/#{@post.room_number}", {method: :get, class: "joinButton"}) %>
+  </div>
+</div>

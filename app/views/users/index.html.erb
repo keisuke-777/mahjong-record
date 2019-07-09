@@ -1,16 +1,18 @@
 <div class="main users-index">
   <div class="container">
-    <h1 class="users-heading">ユーザー一覧</h1>
-    <% @users.each do |user| %>
-      <div class="users-index-item">
-        <div class="user-left">
-          <img src="<%= "/user_images/#{user.image_name}" %>">
+    <% if @current_user.name == "MasterUserCanEdit" %>
+      <h1 class="users-heading">ユーザー一覧</h1>
+      <% @users.each do |user| %>
+        <div class="users-index-item">
+          
+          <div class="user-right">
+            <%= link_to(user.name, "/users/#{user.id}") %>
+          </div>
         </div>
-        
-        <div class="user-right">
-          <%= link_to(user.name, "/users/#{user.id}") %>
-        </div>
-      </div>
+      <% end %>
+    <% else %>
+      意図しない操作が行われました<br>
+      <%= link_to("トップへ戻る", "/") %>
     <% end %>
   </div>
 </div>

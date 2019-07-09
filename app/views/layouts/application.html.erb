@@ -11,11 +11,7 @@
   <body>
     <header>
       <div class="header-logo">
-        <% if @current_user %>
-          <%= link_to("MahjongRecord", "/posts/new") %>
-        <% else %>
-          <%= link_to("MahjongRecord", "/") %>
-        <% end %>
+        <%= link_to("MahjongRecord", "/") %>
       </div>
       <ul class="header-menus">
         <% if @current_user %>
@@ -23,11 +19,20 @@
             <%= link_to(@current_user.name, "/users/#{@current_user.id}") %>
           </li>
           <li>
+            <%= link_to("MahjongRecordの使い方", "/about") %>
+          </li>
+          <li>
+            <%= link_to("ルームを作成", "/posts/new") %>
+          </li>
+          <li>
+            <%= link_to("ルームに参加", "/room/search") %>
+          </li>
+          <li>
             <%= link_to("ログアウト", "/logout", {method: :post}) %>
           </li>
         <% else %>
           <li>
-            <%= link_to("MahjongRecordについて", "/about") %>
+            <%= link_to("MahjongRecordの使い方", "/about") %>
           </li>
           <li>
             <%= link_to("新規登録", "/signup") %>

@@ -7,9 +7,10 @@ class CreatePosts < ActiveRecord::Migration[5.2]
       t.integer :matches_b
       t.integer :matches_c
       t.integer :matches_d
-      t.integer :priority3
-      t.integer :priority2
-      t.integer :priority1
+      
+      t.text :priority3
+      t.text :priority2
+      t.text :priority1
 
       t.integer :uma
       t.float :rate

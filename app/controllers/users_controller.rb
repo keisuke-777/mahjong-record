@@ -5,7 +5,11 @@ class UsersController < ApplicationController
   before_action :ensure_correct_user, {only: [:edit, :update]}
   
   def index
-    @users = User.all
+    if @current_user.name == "MasterUserCanEdit"
+      @users = User.all
+    else
+      redirect_to("/")
+    end
   end
   
   def show
@@ -19,7 +23,6 @@ class UsersController < ApplicationController
   def create
     @user = User.new(
       name: params[:name],
-      email: params[:email],
       password: params[:password],
       rate: "0",
       winning: "0",
@@ -43,13 +46,6 @@ class UsersController < ApplicationController
   def update
     @user = User.find_by(id: params[:id])
     @user.name = params[:name]
-    @user.email = params[:email]
-    
-    if params[:image]
-      @user.image_name = "#{@user.id}.jpg"
-      image = params[:image]
-      File.binwrite("public/user_images/#{@user.image_name}", image.read)
-    end
     
     if @user.save
       flash[:notice] = "ユーザー情報を編集しました"
@@ -63,14 +59,14 @@ class UsersController < ApplicationController
   end
   
   def login
-    @user = User.find_by(email: params[:email], password: params[:password])
+    @user = User.find_by(name: params[:name], password: params[:password])
     if @user
       session[:user_id] = @user.id
       flash[:notice] = "ログインしました"
       redirect_to("/posts/new")
     else
-      @error_message = "メールアドレスまたはパスワードが間違っています"
-      @email = params[:email]
+      @error_message = "ユーザー名またはパスワードが間違っています"
+      @name = params[:name]
       @password = params[:password]
       render("users/login_form")
     end
@@ -90,18 +86,25 @@ class UsersController < ApplicationController
   end
 
   def finish
-    @user = User.find_by(name: @current_user.name)
-    @user.winning += params[:win].to_i
-    @user.total_score += params[:sum].to_i
-    @user.matches += params[:matches].to_i
-    @user.money += (params[:sum].to_i*params[:rate].to_i*100).to_i
-    if @user.save
-      flash[:notice] = "対局結果を記録しました"
-      redirect_to("/users/#{@user.id}")
+    @post = Post.find_by(room_number: params[:room_number])
+    @post.finish = true
+    if @post.save
+      @user = User.find_by(name: @current_user.name)
+      @user.winning += params[:win].to_i
+      @user.total_score += params[:sum].to_i
+      @user.matches += params[:matches].to_i
+      @user.money += (params[:sum].to_i*params[:rate].to_i*100).to_i
+      if @user.save
+        flash[:notice] = "結果を記録し対局を終了しました"
+        redirect_to("/users/#{@user.id}")
+      else
+        flash[:notice] = "記録の保存に失敗しました"
+        redirect_to("/room/#{params[:room_number]}")
+      end
     else
-      render("users/edit")
+      flash[:notice] = "保存に失敗しました"
+      redirect_to("/room/#{params[:room_number]}")
     end
-
   end
   
 end

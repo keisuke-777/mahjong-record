@@ -3,11 +3,6 @@
     <h1 class="form-heading">ルーム設定</h1>
 
     <div class="form-body">
-      <% @post.errors.full_messages.each do |message| %>
-        <div class="form-error">
-          <%= message %>
-        </div>
-      <% end %>
       
       <%= form_tag("/posts/create") do %>
         <p>ルーム番号　　　<input name="room_number" type="number"></p><br>
@@ -15,7 +10,7 @@
         <p>レート　　　　　<input name="rate" type="number" value="0.1" step="0.1"></p><br>
         <p>何点返し　　　　<input name="buck" type="number" value="30000"></p><br>
         
-        <input type="submit" value="ルーム作成">
+        <input type="submit" value="ルームを作成する">
       <% end %>
     </div>
   </div>

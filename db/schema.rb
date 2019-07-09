@@ -19,9 +19,9 @@ ActiveRecord::Schema.define(version: 2019_06_20_004806) do
     t.integer "matches_b"
     t.integer "matches_c"
     t.integer "matches_d"
-    t.integer "priority3"
-    t.integer "priority2"
-    t.integer "priority1"
+    t.text "priority3"
+    t.text "priority2"
+    t.text "priority1"
     t.integer "uma"
     t.float "rate"
     t.integer "buck"
@@ -45,7 +45,6 @@ ActiveRecord::Schema.define(version: 2019_06_20_004806) do
 
   create_table "users", force: :cascade do |t|
     t.string "name"
-    t.string "email"
     t.string "pass"
     t.integer "rate"
     t.integer "winning"

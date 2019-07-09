@@ -1,5 +1,5 @@
 <div class="main posts-index">
-  <div class="container">
+  <div class="tableContainer">
     <% sum = [0,0,0,0] %>
     <% win = [0,0,0,0] %>
     <%= form_tag("/posts/name/#{@post.room_number}") do %>
@@ -13,7 +13,9 @@
             <% elsif @current_user != nil and @current_user.name != @post.name_a and @current_user.name != @post.name_c and @current_user.name != @post.name_d %>
               <%= link_to("ここに参加", "/posts/join/b/#{@post.room_number}", {method: :post, class: "joinButton"}) %>
             <% else %>
-              <input name="name_b" value="<%= @post.name_b %>" class="name_box">
+              <%if @post.finish == false%>
+                <input name="name_b" value="<%= @post.name_b %>" class="name_box">
+              <%end%>
             <% end %>
           </th>
 
@@ -23,7 +25,9 @@
             <% elsif @current_user != nil and @current_user.name != @post.name_a and @current_user.name != @post.name_b and @current_user.name != @post.name_d %>
               <%= link_to("ここに参加", "/posts/join/c/#{@post.room_number}", {method: :post, class: "joinButton"}) %>
             <% else %>
-              <input name="name_c" value="<%= @post.name_c %>" class="name_box">
+              <%if @post.finish == false%>
+                <input name="name_c" value="<%= @post.name_c %>" class="name_box">
+              <%end%>
             <% end %>
           </th>
 
@@ -33,9 +37,11 @@
             <% elsif @current_user != nil and @current_user.name != @post.name_a and @current_user.name != @post.name_b and @current_user.name != @post.name_c %>
               <%= link_to("ここに参加", "/posts/join/d/#{@post.room_number}", {method: :post, class: "joinButton"}) %>
             <% else %>
-              <input name="name_d" value="<%= @post.name_d %>" class="name_box">
+              <%if @post.finish == false%>
+                <input name="name_d" value="<%= @post.name_d %>" class="name_box">
+              <%end%>
             <% end %>
-          </th>          
+          </th>
         </tr>
         <div class="posts-index-item">
           <% if @post.score_a == nil or @post.score_a == "" %>
@@ -62,16 +68,40 @@
             <% scArray_d = @post.score_d.split(',') %>
           <% end %>
 
-          
 
-          <% for i in 0..@post.matches do %>
+          <% if @post.priority3 == nil or @post.priority3 == "" %>
+            <% priorityArray3 = [""] %>
+          <% else %>
+            <% priorityArray3 = @post.priority3.split(',') %>
+          <% end %>
+
+          <% if @post.priority2 == nil or @post.priority2 == "" %>
+            <% priorityArray2 = [""] %>
+          <% else %>
+            <% priorityArray2 = @post.priority2.split(',') %>
+          <% end %>
+
+          <% if @post.priority1 == nil or @post.priority1 == "" %>
+            <% priorityArray1 = [""] %>
+          <% else %>
+            <% priorityArray1 = @post.priority1.split(',') %>
+          <% end %>
+          
+          <%# finishしている場合最後の行(input)は表示しない %>
+          <% if @post.finish %>
+            <% matchsIndex = @post.matches - 1 %>
+          <% else %>
+            <% matchsIndex = @post.matches %>
+          <% end %>
+
+          <% for i in 0..matchsIndex do %>
           
             <% if i != @post.matches %>
               <% all = [scArray_a[i].to_i, scArray_b[i].to_i, scArray_c[i].to_i, scArray_d[i].to_i] %>
               <%# 初期値のままであったり更新していないと変な所に3~1が足されてしまうが、スコアの同じユーザがいなければ計算に支障はない %>
-              <% all[@post.priority3] += 3 %>
-              <% all[@post.priority2] += 2 %>
-              <% all[@post.priority1] += 1 %>
+              <% all[priorityArray3[i].to_i] += 3 %>
+              <% all[priorityArray2[i].to_i] += 2 %>
+              <% all[priorityArray1[i].to_i] += 1 %>
               <% indexOne = all.index(all.max) %>
               <%# ついでに勝利数も記録しとく %>
               <% win[indexOne] += 1 %>
@@ -97,9 +127,9 @@
               <td width="18.4%">
                 <% if i == @post.matches and (scArray_a[i] == nil or scArray_a[i] == "") %>
                   <input type="number" name="score_a">
-                  <input class="checkBox" type="radio" name="ton">東
-                  <input class="checkBox" type="radio" name="nan">南
-                  <input class="checkBox" type="radio" name="sya">西
+                  <input class="checkBox" type="radio" name="ton" value="tonA" checked="checked">東
+                  <input class="checkBox" type="radio" name="nan" value="nanA">南
+                  <input class="checkBox" type="radio" name="sya" value="syaA">西
                 <% elsif i != @post.matches %>
                   <% sum[0] += all[0] %>
                   <%= all[0] %>
@@ -110,9 +140,9 @@
               <td width="18.4%">
                 <% if i == @post.matches and (scArray_b[i] == nil or scArray_b[i] == "") %>
                   <input type="number" name="score_b">
-                  <input class="checkBox" type="radio" name="ton">東
-                  <input class="checkBox" type="radio" name="nan">南
-                  <input class="checkBox" type="radio" name="sya">西
+                  <input class="checkBox" type="radio" name="ton" value="tonB">東
+                  <input class="checkBox" type="radio" name="nan" value="nanB" checked="checked">南
+                  <input class="checkBox" type="radio" name="sya" value="syaB">西
                 <% elsif i != @post.matches %>
                   <% sum[1] += all[1] %>
                   <%= all[1] %>
@@ -123,9 +153,9 @@
               <td width="18.4%">
                 <% if i == @post.matches and (scArray_c[i] == nil or scArray_c[i] == "") %>
                   <input type="number" name="score_c">
-                  <input class="checkBox" type="radio" name="ton">東
-                  <input class="checkBox" type="radio" name="nan">南
-                  <input class="checkBox" type="radio" name="sya">西
+                  <input class="checkBox" type="radio" name="ton" value="tonC">東
+                  <input class="checkBox" type="radio" name="nan" value="nanC">南
+                  <input class="checkBox" type="radio" name="sya" value="syaC" checked="checked">西
                 <% elsif i != @post.matches %>
                   <% sum[2] += all[2] %>
                   <%= all[2] %>
@@ -136,9 +166,9 @@
               <td width="18.4%">
                 <% if i == @post.matches and (scArray_d[i] == nil or scArray_d[i] == "") %>
                   <input type="number" name="score_d">
-                  <input class="checkBox" type="radio" name="ton">東
-                  <input class="checkBox" type="radio" name="nan">南
-                  <input class="checkBox" type="radio" name="sya">西
+                  <input class="checkBox" type="radio" name="ton" value="tonD">東
+                  <input class="checkBox" type="radio" name="nan" value="nanD">南
+                  <input class="checkBox" type="radio" name="sya" value="syaD">西
                 <% elsif i != @post.matches %>
                   <% sum[3] += all[3] %>
                   <%= all[3] %>
@@ -146,6 +176,12 @@
                   <%= scArray_d[i] %>
                 <% end %>
               </td>
+              <%if @post.finish == false%>
+                <td>
+                  <%= link_to("編集", "/room/#{@post.room_number}/#{i}", {method: :get}) %>
+                </td>
+              <% end %>
+
             </tr>
           <% end %>
           <tr>
@@ -168,14 +204,16 @@
       <br>
       <input type="submit" value="反映" />
     <% end %>
-    <% if @current_user.name == @post.name_a %>
-      <%= link_to("結果を保存して終了", "/users/finish/#{sum[0]}/#{@post.matches}/#{win[0]}/#{@post.rate}", {method: :post, class: "joinButton"}) %>
-    <% elsif @current_user.name == @post.name_b %>
-      <%= link_to("結果を保存して終了", "/users/finish/#{sum[1]}/#{@post.matches}/#{win[1]}/#{@post.rate}", {method: :post, class: "joinButton"}) %>
-    <% elsif @current_user.name == @post.name_c %>
-      <%= link_to("結果を保存して終了", "/users/finish/#{sum[2]}/#{@post.matches}/#{win[2]}/#{@post.rate}", {method: :post, class: "joinButton"}) %>
-    <% elsif @current_user.name == @post.name_d %>
-      <%= link_to("結果を保存して終了", "/users/finish/#{sum[3]}/#{@post.matches}/#{win[3]}/#{@post.rate}", {method: :post, class: "joinButton"}) %>
+    <%if @current_user != nil %>
+      <% if @current_user.name == @post.name_a %>
+        <%= link_to("結果を保存して終了", "/users/finish/#{@post.room_number}/#{sum[0]}/#{@post.matches}/#{win[0]}/#{@post.rate}", {method: :post, class: "joinButton"}) %>
+      <% elsif @current_user.name == @post.name_b %>
+        <%= link_to("結果を保存して終了", "/users/finish/#{@post.room_number}/#{sum[1]}/#{@post.matches}/#{win[1]}/#{@post.rate}", {method: :post, class: "joinButton"}) %>
+      <% elsif @current_user.name == @post.name_c %>
+        <%= link_to("結果を保存して終了", "/users/finish/#{@post.room_number}/#{sum[2]}/#{@post.matches}/#{win[2]}/#{@post.rate}", {method: :post, class: "joinButton"}) %>
+      <% elsif @current_user.name == @post.name_d %>
+        <%= link_to("結果を保存して終了", "/users/finish/#{@post.room_number}/#{sum[3]}/#{@post.matches}/#{win[3]}/#{@post.rate}", {method: :post, class: "joinButton"}) %>
+      <% end %>
     <% end %>
   </div>
 </div>
