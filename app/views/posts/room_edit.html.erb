@@ -32,6 +32,7 @@
           </th>
         </tr>
         <div class="posts-index-item">
+          <%# ,区切りの文字列データを分解し、scArrayに適切な数字を代入 %>
           <% if @post.score_a == nil or @post.score_a == "" %>
             <% scArray_a = [""] %>
           <% else %>
@@ -75,6 +76,13 @@
             <% priorityArray1 = @post.priority1.split(',') %>
           <% end %>
 
+          <%# ,区切りの文字列データを分解し、tobiArray(飛び点)に適切な数字を代入 %>
+          <% if @post.tobi == nil or @post.tobi == "" %>
+            <% tobiArray = [""] %>
+          <% else %>
+            <% tobiArray = @post.tobi.split(',') %>
+          <% end %>
+
           <% i = params[:row].to_i %>
           <% all = [scArray_a[i].to_i, scArray_b[i].to_i, scArray_c[i].to_i, scArray_d[i].to_i] %>
             
@@ -99,6 +107,12 @@
                 <% else %>
                     <input class="checkBox" type="radio" name="sya" value="syaA">西
                 <% end %>
+                <br>
+                <% if tobiArray[i] == "0" %>
+                    <input class="checkBox" type="radio" name="tobi" value="tobiA" checked="checked">飛ばし
+                <% else %>
+                    <input class="checkBox" type="radio" name="tobi" value="tobiA">飛ばし
+                <% end %>
 
               </td>
               <td width="18.4%">
@@ -118,11 +132,18 @@
                 <% else %>
                     <input class="checkBox" type="radio" name="sya" value="syaB">西
                 <% end %>
+                <br>
+                <% if tobiArray[i] == "1" %>
+                    <input class="checkBox" type="radio" name="tobi" value="tobiB" checked="checked">飛ばし
+                <% else %>
+                    <input class="checkBox" type="radio" name="tobi" value="tobiB">飛ばし
+                <% end %>
+
               </td>
               <td width="18.4%">
                 <input type="number" name="score_c" value="<%= all[2] %>">
                 <% if priorityArray3[i] == "2" %>
-                    <input class="checkBox" type="radio" name="ton" value="tonB" checked="checked">東
+                    <input class="checkBox" type="radio" name="ton" value="tonC" checked="checked">東
                 <% else %>
                     <input class="checkBox" type="radio" name="ton" value="tonC">東
                 <% end %>
@@ -136,13 +157,18 @@
                 <% else %>
                     <input class="checkBox" type="radio" name="sya" value="syaC">西
                 <% end %>
-                
-                
+                <br>
+                <% if tobiArray[i] == "2" %>
+                    <input class="checkBox" type="radio" name="tobi" value="tobiC" checked="checked">飛ばし
+                <% else %>
+                    <input class="checkBox" type="radio" name="tobi" value="tobiC">飛ばし
+                <% end %>
               </td>
+
               <td width="18.4%">
                 <input type="number" name="score_d" value="<%= all[3] %>">
                 <% if priorityArray3[i] == "3" %>
-                    <input class="checkBox" type="radio" name="ton" value="tonB" checked="checked">東
+                    <input class="checkBox" type="radio" name="ton" value="tonD" checked="checked">東
                 <% else %>
                     <input class="checkBox" type="radio" name="ton" value="tonD">東
                 <% end %>
@@ -156,6 +182,12 @@
                 <% else %>
                     <input class="checkBox" type="radio" name="sya" value="syaD">西
                 <% end %>
+                <br>
+                <% if tobiArray[i] == "3" %>
+                    <input class="checkBox" type="radio" name="tobi" value="tobiD" checked="checked">飛ばし
+                <% else %>
+                    <input class="checkBox" type="radio" name="tobi" value="tobiD">飛ばし
+                <% end %>
               </td>
             </tr>
 
@@ -164,6 +196,7 @@
       <br>
       <input type="submit" value="変更を保存して戻る" />
     <% end %>
+    <br>
     <%= link_to("変更を破棄する", "/room/#{@post.room_number}", {method: :get, class: "joinButton"}) %>
   </div>
 </div>

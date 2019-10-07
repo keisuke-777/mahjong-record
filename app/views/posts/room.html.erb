@@ -44,6 +44,7 @@
           </th>
         </tr>
         <div class="posts-index-item">
+          <%# ,区切りの文字列データを分解し、scArrayに適切な数字を代入 %>
           <% if @post.score_a == nil or @post.score_a == "" %>
             <% scArray_a = [""] %>
           <% else %>
@@ -86,6 +87,13 @@
           <% else %>
             <% priorityArray1 = @post.priority1.split(',') %>
           <% end %>
+
+          <%# ,区切りの文字列データを分解し、tobiArray(飛び点)に適切な数字を代入 %>
+          <% if @post.tobi == nil or @post.tobi == "" %>
+            <% tobiArray = [""] %>
+          <% else %>
+            <% tobiArray = @post.tobi.split(',') %>
+          <% end %>
           
           <%# finishしている場合最後の行(input)は表示しない %>
           <% if @post.finish %>
@@ -113,8 +121,36 @@
               <% all[indexThree] = -100000000 %>
               <% indexFour = all.index(all.max) %>
 
+              <%# 得点を修復 %>
               <% all = [scArray_a[i].to_i, scArray_b[i].to_i, scArray_c[i].to_i, scArray_d[i].to_i] %>
-              <%# 5捨6入+順位点 %>
+              
+              <%# ここで飛び点などの順位に関係しない点数の計算を行う %>
+              <% if tobiArray[i] != "-1" %>
+                <%# tobiIndexに飛び点を与えるプレイヤーのインデックスを与える %>
+                <% tobiIndex = tobiArray[i].to_i %>
+                <% tobiCount = 0 %>
+                <%# 飛んでるユーザ(得点がマイナスのユーザ)から得点を徴収(飛ばしたプレイヤーがマイナスな場合は考慮しないでOK(徴収されても、分配されるので+-0)) %>
+                <% if all[0] < 0 %>
+                  <% all[0] -= @post.tobi_score %>
+                  <% tobiCount += 1 %>
+                <% end %>
+                <% if all[1] < 0 %>
+                  <% all[1] -= @post.tobi_score %>
+                  <% tobiCount += 1 %>
+                <% end %>
+                <% if all[2] < 0 %>
+                  <% all[2] -= @post.tobi_score %>
+                  <% tobiCount += 1 %>
+                <% end %>
+                <% if all[3] < 0 %>
+                  <% all[3] -= @post.tobi_score %>
+                  <% tobiCount += 1 %>
+                <% end %>
+                <%# 徴収した得点を飛ばした人に全て渡す %>
+                <% all[tobiIndex] = all[tobiIndex] + (tobiCount * @post.tobi_score) %>
+              <% end %>
+
+              <%# 5捨6入(400を足すと5捨6入の処理が可能)+順位点 %>
               <% all[indexTwo] = (all[indexTwo]+400 + @post.uma*1 - @post.buck)/1000 %>
               <% all[indexThree] = (all[indexThree]+400 - @post.uma*1 - @post.buck)/1000 %>
               <% all[indexFour] = (all[indexFour]+400 - @post.uma*2 - @post.buck)/1000 %>
@@ -130,6 +166,8 @@
                   <input class="checkBox" type="radio" name="ton" value="tonA" checked="checked">東
                   <input class="checkBox" type="radio" name="nan" value="nanA">南
                   <input class="checkBox" type="radio" name="sya" value="syaA">西
+                  <br>
+                  <input class="checkBox" type="radio" name="tobi" value="tobiA">飛ばし
                 <% elsif i != @post.matches %>
                   <% sum[0] += all[0] %>
                   <%= all[0] %>
@@ -143,6 +181,8 @@
                   <input class="checkBox" type="radio" name="ton" value="tonB">東
                   <input class="checkBox" type="radio" name="nan" value="nanB" checked="checked">南
                   <input class="checkBox" type="radio" name="sya" value="syaB">西
+                  <br>
+                  <input class="checkBox" type="radio" name="tobi" value="tobiB">飛ばし
                 <% elsif i != @post.matches %>
                   <% sum[1] += all[1] %>
                   <%= all[1] %>
@@ -156,6 +196,8 @@
                   <input class="checkBox" type="radio" name="ton" value="tonC">東
                   <input class="checkBox" type="radio" name="nan" value="nanC">南
                   <input class="checkBox" type="radio" name="sya" value="syaC" checked="checked">西
+                  <br>
+                  <input class="checkBox" type="radio" name="tobi" value="tobiB">飛ばし
                 <% elsif i != @post.matches %>
                   <% sum[2] += all[2] %>
                   <%= all[2] %>
@@ -169,6 +211,8 @@
                   <input class="checkBox" type="radio" name="ton" value="tonD">東
                   <input class="checkBox" type="radio" name="nan" value="nanD">南
                   <input class="checkBox" type="radio" name="sya" value="syaD">西
+                  <br>
+                  <input class="checkBox" type="radio" name="tobi" value="tobiB">飛ばし
                 <% elsif i != @post.matches %>
                   <% sum[3] += all[3] %>
                   <%= all[3] %>
@@ -205,6 +249,7 @@
       <input type="submit" value="反映" />
     <% end %>
     <%if @current_user != nil %>
+    <br>
       <% if @current_user.name == @post.name_a %>
         <%= link_to("結果を保存して終了", "/users/finish/#{@post.room_number}/#{sum[0]}/#{@post.matches}/#{win[0]}/#{@post.rate}", {method: :post, class: "joinButton"}) %>
       <% elsif @current_user.name == @post.name_b %>

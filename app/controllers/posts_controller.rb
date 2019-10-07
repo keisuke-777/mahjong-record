@@ -27,11 +27,11 @@ class PostsController < ApplicationController
       scArray_b[i] = params[:score_b]
       scArray_c[i] = params[:score_c]
       scArray_d[i] = params[:score_d]
+
       @post.score_a = scArray_a.join(',')
       @post.score_b = scArray_b.join(',')
       @post.score_c = scArray_c.join(',')
       @post.score_d = scArray_d.join(',')
-      
 
       priorityArray3 = @post.priority3.split(',')
       priorityArray2 = @post.priority2.split(',')
@@ -69,6 +69,21 @@ class PostsController < ApplicationController
       @post.priority3 = priorityArray3.join(',')
       @post.priority2 = priorityArray2.join(',')
       @post.priority1 = priorityArray1.join(',')
+      
+      tobiArray = @post.tobi.split(',')
+      # 飛び点のインデックスを追加
+      if params[:tobi] == "tobiA"
+        tobiArray[i] = "0"
+      elsif params[:tobi] == "tobiB"
+        tobiArray[i] = "1"
+      elsif params[:tobi] == "tobiC"
+        tobiArray[i] = "2"
+      elsif params[:tobi] == "tobiD"
+        tobiArray[i] = "3"
+      else
+        tobiArray[i] = "-1"
+      end
+      @post.tobi = tobiArray.join(',')
 
       if @post.save
         flash[:notice] = "テーブルを更新しました"
@@ -99,6 +114,7 @@ class PostsController < ApplicationController
       buck: params[:buck],
       hako: "",
       tobi: "",
+      tobi_score: params[:tobi_score],
       yakitori: "",
       yakuman: "",
       finish: "false",
@@ -199,7 +215,7 @@ class PostsController < ApplicationController
       @post.matches += 1
     end
 
-    # @post.matches が更新されている場合のみ東西南を反映
+    # @post.matches が更新されている場合のみ東西南および飛ばしを反映
     if beforeMatches != @post.matches
       # 優先度3=東 a=0,b=1,c=2,d=3
       if params[:ton] == "tonA"
@@ -281,6 +297,42 @@ class PostsController < ApplicationController
           @post.priority1 = @post.priority1 << ",3"
         end
       end
+
+      # 飛ばしたプレイヤー a=0,b=1,c=2,d=3
+      if params[:tobi] == "tobiA"
+        if @post.tobi == ""
+          @post.tobi = "0"
+        else
+          @post.tobi = @post.tobi << ",0"
+        end
+      elsif params[:tobi] == "tobiB"
+        if @post.tobi == ""
+          @post.tobi = "1"
+        else
+          @post.tobi = @post.tobi << ",1"
+        end
+      elsif params[:tobi] == "tobiC"
+        if @post.tobi == ""
+          @post.tobi = "2"
+        else
+          @post.tobi = @post.tobi << ",2"
+        end
+      elsif params[:tobi] == "tobiD"
+        if @post.tobi == ""
+          @post.tobi = "3"
+        else
+          @post.tobi = @post.tobi << ",3"
+        end
+      else
+        # どれもクリックされていない場合、飛ばした人はいない
+        if @post.tobi == ""
+          @post.tobi = "-1"
+        else
+          @post.tobi = @post.tobi << ",-1"
+        end
+      end
+
+
     end
 
     if @post.save

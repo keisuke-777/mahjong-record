@@ -3,19 +3,23 @@
     <div class="user">
 
       <h2>ユーザー名:<%= @user.name %></h2>
+      <br>
       <% if @user.winning == 0 %>
         <p>勝率:0%</p>
       <% else %>
         <p>勝率:<%= @user.winning*100/@user.matches %>%</p>
       <% end %>
+      <br>
       <% if @user.total_score == 0 %>
         <p>平均スコア:0</p>
       <% else %>
         <p>平均スコア:<%= @user.total_score/@user.matches %></p>
       <% end %>
+      <br>
       <p>利益:<%= @user.money %>円</p>
+      <br>
       <% if @user.id == @current_user.id %>
-        <%= link_to("編集", "/users/#{@user.id}/edit") %>
+        <%= link_to("編集", "/users/#{@user.id}/edit", {class: "joinButton"}) %>
       <% end %>
     </div>
   </div>

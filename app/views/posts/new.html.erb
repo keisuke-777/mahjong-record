@@ -5,12 +5,12 @@
     <div class="form-body">
       
       <%= form_tag("/posts/create") do %>
-        <p>ルーム番号　　　<input name="room_number" type="number"></p><br>
-        <p>順位点　　　　　<input name="uma" type="number" value="10000"></p><br>
-        <p>レート　　　　　<input name="rate" type="number" value="0.1" step="0.1"></p><br>
-        <p>何点返し　　　　<input name="buck" type="number" value="30000"></p><br>
-        
-        <input type="submit" value="ルームを作成する">
+        <p class="new">ルーム番号　　　<input name="room_number" type="number"></p><br>
+        <p class="new">順位点　　　　　<input name="uma" type="number" value="10000"></p><br>
+        <p class="new">レート　　　　　<input name="rate" type="number" value="0.1" step="0.1"></p><br>
+        <p class="new">何点返し　　　　<input name="buck" type="number" value="30000"></p><br>
+        <p class="new">飛び点　　　　　<input name="tobi_score" type="number" value="10000"></p><br>
+        <p class="new">　　　　　　　<input type="submit" value="ルームを作成する" class="create_btn"></p>
       <% end %>
     </div>
   </div>

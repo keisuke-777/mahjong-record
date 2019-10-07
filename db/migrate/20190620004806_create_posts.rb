@@ -17,8 +17,11 @@ class CreatePosts < ActiveRecord::Migration[5.2]
       t.integer :buck
       t.text :hako
       t.text :tobi
+      t.integer :tobi_score
       t.text :yakitori
+      t.integer :yakitori_score
       t.text :yakuman
+      t.integer :yakuman_score
       t.text :rule
       t.boolean :finish
 
