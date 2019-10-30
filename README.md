@@ -1,24 +1,4 @@
-# README
+# [MahjongRecord](https://mahjong-record.herokuapp.com/)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+MahjongRecordは麻雀の精算作業を素早く簡単に行い
+保存するためのアプリです。
